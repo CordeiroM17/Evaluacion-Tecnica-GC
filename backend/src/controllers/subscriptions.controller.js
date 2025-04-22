@@ -9,12 +9,32 @@ export const subscriptionsController = {
       return res.status(201).json({
         status: 'Success',
         msg: 'Subscription created',
-        data: { subscriptionCreated },
+        data: subscriptionCreated,
       });
     } catch (error) {
       return res.status(500).json({
         status: 'Error',
-        msg: 'Something went wrongd',
+        msg: 'Something went wrong',
+        data: { error },
+      });
+    }
+  },
+
+  getAllSubscriptionByPhoneNumber: async function (req, res) {
+    const { phoneNumber } = req.phoneNumber;
+
+    try {
+      const subscriptionsFound = await subscriptionService.getSubscriptionsByPhone(phoneNumber);
+
+      return res.status(200).json({
+        status: 'Success',
+        msg: 'All subscriptions for number, ' + phoneNumber,
+        data: subscriptionsFound,
+      });
+    } catch (error) {
+      return res.status(500).json({
+        status: 'Error',
+        msg: 'Something went wrong',
         data: { error },
       });
     }
