@@ -1,4 +1,6 @@
 import { loginService } from '../services/login.service.js';
+import jwt from 'jsonwebtoken';
+import { JWT_SECRET_KEY } from '../utils/enviroment.js';
 
 export const loginController = {
   postLogin: async function (req, res) {
@@ -15,11 +17,21 @@ export const loginController = {
         });
       }
 
-      return res.status(401).json({
-        status: 'Success',
-        message: 'Authentication completed',
-        data: {},
-      });
+      // Create token if user authenticated
+      const token = jwt.sign({ userFound }, JWT_SECRET_KEY);
+
+      return res
+        .cookie('token', token, {
+          httpOnly: true,
+          secure: false,
+          maxAge: 1000 * 60 * 60,
+        })
+        .status(401)
+        .json({
+          status: 'Success',
+          message: 'Authentication completed',
+          data: {},
+        });
     } catch (error) {
       return res.status(500).json({
         status: 'Error',

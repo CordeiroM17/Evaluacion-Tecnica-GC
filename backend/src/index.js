@@ -1,5 +1,6 @@
 import express from 'express';
 import cors from 'cors';
+import cookieParser from 'cookie-parser';
 
 import { PORT } from './utils/enviroment.js';
 import { initializeDatabase } from './utils/db.js';
@@ -15,6 +16,7 @@ const app = express();
 // MIDDLEWARES
 app.use(cors());
 app.use(express.json());
+app.use(cookieParser());
 
 initializeDatabase();
 
