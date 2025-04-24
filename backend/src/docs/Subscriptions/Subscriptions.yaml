@@ -1,0 +1,125 @@
+paths:
+  /subscriptions:
+    post:
+      summary: Create a new subscription for a phone number
+      tags:
+        - Subscriptions
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SubscriptionRequest'
+      responses:
+        '201':
+          description: Subscription created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubscriptionResponse'
+              example:
+                status: Success
+                message: Subscription created
+                data: { phone: '+1234567890', categories: [music, sports] }
+        '400':
+          description: Invalid phone number
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubscriptionResponse'
+              example:
+                status: Error
+                message: Phone number not valid. Should be in an international format (e.g. +1234567890)
+                data: {}
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServerError'
+
+  /subscriptions/{phoneNumber}:
+    get:
+      summary: Get all categories for a number
+      tags:
+        - Subscriptions
+      parameters:
+        - name: phoneNumber
+          in: path
+          required: true
+          schema:
+            type: string
+            example: '+1234567890'
+      responses:
+        '200':
+          description: Get of all categories
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubscriptionResponse'
+              example:
+                status: Success
+                message: All subscriptions for number, +1234567890
+                data: { phone: '+1234567890', categories: [music, sports] }
+        '400':
+          description: Invalid phone number
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubscriptionResponse'
+              example:
+                status: Error
+                message: Phone number not valid. Should be in an international format (e.g. +1234567890)
+                data: {}
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServerError'
+
+components:
+  schemas:
+    SubscriptionRequest:
+      type: object
+      required:
+        - phone
+        - categories
+      properties:
+        phone:
+          type: string
+          example: '+1234567890'
+        categories:
+          type: array
+          items:
+            type: string
+          example: ['sports', 'music']
+
+    SubscriptionResponse:
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+          enum:
+            - 'Phone number not valid. Should be in an international format (e.g. +1234567890)'
+            - 'Categories not valid'
+        data:
+          type: object
+          enum:
+            - {}
+            - categoriesAvailable: ['sports', 'movies', 'technology', 'music', 'games']
+
+    ServerError:
+      type: object
+      properties:
+        status:
+          type: string
+          example: Error
+        message:
+          type: string
+          example: Something went wrong
+        data:
+          type: object
+          example: {}
