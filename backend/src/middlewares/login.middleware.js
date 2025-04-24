@@ -1,3 +1,6 @@
+import jwt from 'jsonwebtoken';
+import { JWT_SECRET_KEY } from '../utils/enviroment.js';
+
 export function validateLogin(req, res, next) {
   let { email, password } = req.body;
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -41,6 +44,39 @@ export function validateLogin(req, res, next) {
 
     next();
   } catch (error) {
+    return res.status(500).json({
+      status: 'Error',
+      message: 'Something went wrong',
+      data: { error },
+    });
+  }
+}
+
+export function validateToken(req, res, next) {
+  const token = req.cookies.token;
+
+  try {
+    if (!token) {
+      return res.status(401).json({
+        status: 'Error',
+        message: 'Unauthorized',
+        data: {},
+      });
+    }
+
+    // If jwt.verify fails, throw error
+    jwt.verify(token, JWT_SECRET_KEY);
+
+    next();
+  } catch (error) {
+    if (error.name === 'TokenExpiredError') {
+      return res.status(401).json({
+        status: 'Error',
+        message: 'Unauthorized token expired',
+        data: {},
+      });
+    }
+
     return res.status(500).json({
       status: 'Error',
       message: 'Something went wrong',

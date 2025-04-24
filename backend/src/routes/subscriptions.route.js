@@ -1,9 +1,10 @@
 import express from 'express';
 import { subscriptionsController } from '../controllers/subscriptions.controller.js';
 import { validatePhoneAndCategories, validatePhoneNumber } from '../middlewares/subscriptions.middleware.js';
+import { validateToken } from '../middlewares/login.middleware.js';
 
 export const subscriptionsRouter = express.Router();
 
-subscriptionsRouter.post('/', validatePhoneAndCategories, subscriptionsController.postSubscription);
+subscriptionsRouter.post('/', validateToken, validatePhoneAndCategories, subscriptionsController.postSubscription);
 
-subscriptionsRouter.get('/:phoneNumber', validatePhoneNumber, subscriptionsController.getAllSubscriptionByPhoneNumber);
+subscriptionsRouter.get('/:phoneNumber', validateToken, validatePhoneNumber, subscriptionsController.getAllSubscriptionByPhoneNumber);
