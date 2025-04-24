@@ -8,13 +8,13 @@ export const subscriptionsController = {
 
       return res.status(201).json({
         status: 'Success',
-        msg: 'Subscription created',
+        message: 'Subscription created',
         data: subscriptionCreated,
       });
     } catch (error) {
       return res.status(500).json({
         status: 'Error',
-        msg: 'Something went wrong',
+        message: 'Something went wrong',
         data: { error },
       });
     }
@@ -29,20 +29,20 @@ export const subscriptionsController = {
       if (subscriptionsFound.categories.length == 0) {
         return res.status(200).json({
           status: 'Success',
-          msg: `Phone number ${phoneNumber} doesn't have subscriptions yet`,
+          message: `Phone number ${phoneNumber} doesn't have subscriptions yet`,
           data: subscriptionsFound,
         });
       }
 
       return res.status(200).json({
         status: 'Success',
-        msg: 'All subscriptions for number, ' + phoneNumber,
+        message: 'All subscriptions for number, ' + phoneNumber,
         data: subscriptionsFound,
       });
     } catch (error) {
       return res.status(500).json({
         status: 'Error',
-        msg: 'Something went wrong',
+        message: 'Something went wrong',
         data: { error },
       });
     }

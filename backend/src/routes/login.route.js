@@ -1,6 +1,7 @@
 import express from 'express';
 import { loginController } from '../controllers/login.controller.js';
+import { validateLogin } from '../middlewares/login.middleware.js';
 
 export const loginRouter = express.Router();
 
-loginRouter.post('/', loginController.postLogin);
+loginRouter.post('/', validateLogin, loginController.postLogin);
