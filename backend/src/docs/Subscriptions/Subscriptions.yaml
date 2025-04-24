@@ -16,7 +16,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/SubscriptionResponse'
+                $ref: '#/components/schemas/SubscriptionPostResponse'
               example:
                 status: Success
                 message: Subscription created
@@ -26,7 +26,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/SubscriptionResponse'
+                $ref: '#/components/schemas/SubscriptionPostResponse'
               example:
                 status: Error
                 message: Phone number not valid. Should be in an international format (e.g. +1234567890)
@@ -56,17 +56,19 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/SubscriptionResponse'
+                $ref: '#/components/schemas/SubscriptionGetResponse'
               example:
                 status: Success
-                message: All subscriptions for number, +1234567890
-                data: { phone: '+1234567890', categories: [music, sports] }
+                message:
+                  enum: All subscriptions for number, +1234567890
+                data:
+                  enum: { phone: 1234567890', categories: [music, sports] }
         '400':
           description: Invalid phone number
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/SubscriptionResponse'
+                $ref: '#/components/schemas/SubscriptionGetResponse'
               example:
                 status: Error
                 message: Phone number not valid. Should be in an international format (e.g. +1234567890)
@@ -95,21 +97,56 @@ components:
             type: string
           example: ['sports', 'music']
 
-    SubscriptionResponse:
+    StandardResponse:
       type: object
+      required:
+        - status
+        - message
+        - data
       properties:
         status:
           type: string
+          enum:
+            - Success
+            - Error
+        message:
+          type: string
+        data:
+          type: object
+
+    SubscriptionGetResponse:
+      - $ref: '#/components/schemas/StandardResponse'
+      - type: object
+        properties:
+          message:
+            type: string
+            enum:
+              - Phone number not valid. Should be in an international format (e.g. +1234567890)
+              - Phone number +1234567890 doesn't have subscriptions yet
+              - All subscriptions for number, +1234567890
+          data:
+            type: object
+            enum:
+              - {}
+              - { phone: '+1234567890', categories: [] }
+              - { phone: '+1234567890', categories: [music, sports] }
+
+    SubscriptionPostResponse:
+      $ref: '#/components/schemas/StandardResponse'
+      type: object
+      properties:
         message:
           type: string
           enum:
-            - 'Phone number not valid. Should be in an international format (e.g. +1234567890)'
-            - 'Categories not valid'
+            - Phone number not valid. Should be in an international format (e.g. +1234567890)
+            - Categories not valid
+            - Subscription created
         data:
           type: object
           enum:
             - {}
-            - categoriesAvailable: ['sports', 'movies', 'technology', 'music', 'games']
+            - { categoriesAvailable: ['sports', 'movies', 'technology', 'music', 'games'] }
+            - { phone: '+1234567890', categories: [music, sports] }
 
     ServerError:
       type: object

@@ -26,6 +26,14 @@ export const subscriptionsController = {
     try {
       const subscriptionsFound = await subscriptionService.getSubscriptionsByPhone(phoneNumber);
 
+      if (subscriptionsFound.categories.length == 0) {
+        return res.status(200).json({
+          status: 'Success',
+          msg: `Phone number ${phoneNumber} doesn't have subscriptions yet`,
+          data: subscriptionsFound,
+        });
+      }
+
       return res.status(200).json({
         status: 'Success',
         msg: 'All subscriptions for number, ' + phoneNumber,
