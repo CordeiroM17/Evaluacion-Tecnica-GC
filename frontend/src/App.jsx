@@ -1,14 +1,17 @@
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Header from "./components/Header";
-import LoginForm from "./components/LoginForm";
+import MainPage from "./pages/MainPage";
 
 function App() {
   return (
-    <>
+    <BrowserRouter>
       <Header />
       <main className="w-full flex justify-center">
-        <LoginForm />
+        <Routes>
+          <Route exact path="/" element={<MainPage />} />
+        </Routes>
       </main>
-    </>
+    </BrowserRouter>
   );
 }
 

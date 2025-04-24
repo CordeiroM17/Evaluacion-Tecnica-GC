@@ -26,7 +26,7 @@ export const loginController = {
           secure: false,
           maxAge: 1000 * 60 * 60,
         })
-        .status(401)
+        .status(200)
         .json({
           status: 'Success',
           message: 'Authentication completed',
