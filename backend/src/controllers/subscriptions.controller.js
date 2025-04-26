@@ -47,4 +47,22 @@ export const subscriptionsController = {
       });
     }
   },
+
+  getAllCategories: function (req, res) {
+    try {
+      const allCategories = subscriptionService.categories();
+
+      return res.status(200).json({
+        status: 'Success',
+        message: 'All categories available',
+        data: allCategories,
+      });
+    } catch (error) {
+      return res.status(500).json({
+        status: 'Error',
+        message: 'Something went wrong',
+        data: { error },
+      });
+    }
+  },
 };

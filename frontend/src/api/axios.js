@@ -10,19 +10,18 @@ export const PostLogin = async (email, password) => {
   return await api.post("/login", { email, password });
 };
 
-export const Logout = () => {
-  api.post("/login/logout").then((res) => {
-    console.log(res);
-  });
+export const Logout = async () => {
+  return await api.post("/login/logout");
 };
 
-export const PostSubscription = () => {
-  api.post("/subscription").then((res) => {
-    console.log(res);
-  });
+export const PostSubscription = async (phoneNumber, categories) => {
+  return await api.post("/subscriptions", { phone: phoneNumber, categories });
 };
-export const GetAllSubscriptionByPhoneNumber = (phoneNumber) => {
-  api.get(`/subscription/${phoneNumber}`).then((res) => {
-    console.log(res);
-  });
+
+export const GetAllSubscriptionByPhoneNumber = async (phoneNumber) => {
+  return await api.get(`/subscriptions/${phoneNumber}`);
+};
+
+export const GetAllCategories = async () => {
+  return await api.get("/subscriptions/categories");
 };

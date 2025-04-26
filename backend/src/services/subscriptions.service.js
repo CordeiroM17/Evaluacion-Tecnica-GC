@@ -1,4 +1,5 @@
 import { db } from '../utils/db.js';
+import { validCategories } from '../utils/enviroment.js';
 
 export const subscriptionService = {
   createSubscription: function (phone, categories) {
@@ -44,5 +45,9 @@ export const subscriptionService = {
         }
       });
     });
+  },
+
+  categories: function () {
+    return { categories: validCategories };
   },
 };

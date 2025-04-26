@@ -34,7 +34,6 @@ export function validatePhoneNumber(req, res, next) {
 
 export function validatePhoneAndCategories(req, res, next) {
   const { phone, categories } = req.body;
-
   try {
     if (!isPhoneNumberValid(phone)) {
       return res.status(400).json({

@@ -22,7 +22,6 @@ export const loginController = {
 
       return res
         .cookie('token', token, {
-          httpOnly: true,
           secure: false,
           maxAge: 1000 * 60 * 60,
         })
