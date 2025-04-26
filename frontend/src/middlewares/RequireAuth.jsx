@@ -1,7 +1,12 @@
 import { Navigate } from "react-router-dom";
+import { useAuth } from "../context/AuthProvider";
 
 const RequireAuth = ({ children }) => {
-  const isAuthenticated = document.cookie.includes("token");
+  const { isAuthenticated, loading } = useAuth();
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   if (!isAuthenticated) {
     return <Navigate to="/" replace />;

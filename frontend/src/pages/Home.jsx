@@ -5,7 +5,7 @@ import {
   GetAllCategories,
   GetAllSubscriptionByPhoneNumber,
   PostSubscription,
-} from "../api/axios";
+} from "../api/subscription";
 
 const Home = () => {
   const [phoneNumber, setPhoneNumber] = useState("");
@@ -91,7 +91,7 @@ const Home = () => {
         icon: "success",
         title: `Congratulations, you are now subscribed to ${name}`,
       });
-      await fetchData(numberSubmit); // Refresh subsciptions added
+      await fetchData(numberSubmit); // Refresh subscriptions added
     } else {
       Toast.fire({
         icon: "error",

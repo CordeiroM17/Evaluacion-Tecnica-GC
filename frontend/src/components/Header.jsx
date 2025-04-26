@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { Logout } from "../api/axios";
+import { Logout } from "../api/login";
 
 const Header = () => {
   const navigate = useNavigate();

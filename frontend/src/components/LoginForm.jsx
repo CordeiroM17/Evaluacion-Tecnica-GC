@@ -1,10 +1,12 @@
 import { useState } from "react";
-import { PostLogin } from "../api/axios";
 import { useNavigate } from "react-router-dom";
+import { PostLogin } from "../api/login";
+import { useAuth } from "../context/AuthProvider";
 
 const LoginForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const { setIsAuthenticated } = useAuth();
 
   const navigate = useNavigate();
 
@@ -15,6 +17,7 @@ const LoginForm = () => {
     const res = await PostLogin(email, password);
 
     if (res.status === 200) {
+      setIsAuthenticated(true);
       navigate("/home");
     }
   };
