@@ -22,22 +22,62 @@ export const subscriptionsController = {
 
   getAllSubscriptionByPhoneNumber: async function (req, res) {
     const { phoneNumber } = req.phoneNumber;
+    const userPhone = req.user.phone;
 
     try {
-      const subscriptionsFound = await subscriptionService.getSubscriptionsByPhone(phoneNumber);
-
-      if (subscriptionsFound.categories.length == 0) {
-        return res.status(200).json({
-          status: 'Success',
-          message: `Phone number ${phoneNumber} doesn't have subscriptions yet`,
-          data: subscriptionsFound,
+      if (phoneNumber !== userPhone) {
+        return res.status(404).json({
+          status: 'Error',
+          message: 'User phone not found',
+          data: {},
         });
       }
+
+      const subscriptionsFound = await subscriptionService.getSubscriptionsByPhone(phoneNumber);
 
       return res.status(200).json({
         status: 'Success',
         message: 'All subscriptions for number, ' + phoneNumber,
         data: subscriptionsFound,
+      });
+    } catch (error) {
+      return res.status(500).json({
+        status: 'Error',
+        message: 'Something went wrong',
+        data: { error },
+      });
+    }
+  },
+
+  getAllCategories: async function (req, res) {
+    try {
+      const allCategories = await subscriptionService.categories();
+
+      return res.status(200).json({
+        status: 'Success',
+        message: 'All categories available',
+        data: allCategories,
+      });
+    } catch (error) {
+      return res.status(500).json({
+        status: 'Error',
+        message: 'Something went wrong',
+        data: { error },
+      });
+    }
+  },
+
+  deleteCategory: async function (req, res) {
+    const { id } = req.user;
+    const { category } = req.categoryToDelete;
+
+    try {
+      const categoryDeleted = await subscriptionService.deleteCategory(id, category);
+
+      return res.status(200).json({
+        status: 'Success',
+        message: 'Deleted',
+        data: categoryDeleted,
       });
     } catch (error) {
       return res.status(500).json({

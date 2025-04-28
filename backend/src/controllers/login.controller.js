@@ -18,7 +18,7 @@ export const loginController = {
       }
 
       // Create token if user authenticated
-      const token = jwt.sign({ userFound }, JWT_SECRET_KEY);
+      const token = jwt.sign(userFound, JWT_SECRET_KEY);
 
       return res
         .cookie('token', token, {
@@ -26,16 +26,16 @@ export const loginController = {
           secure: false,
           maxAge: 1000 * 60 * 60,
         })
-        .status(401)
+        .status(200)
         .json({
           status: 'Success',
           message: 'Authentication completed',
-          data: {},
+          data: userFound,
         });
     } catch (error) {
-      return res.status(500).json({
+      return res.status(400).json({
         status: 'Error',
-        message: 'Something went wrong',
+        message: error,
         data: { error },
       });
     }

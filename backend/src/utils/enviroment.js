@@ -1,7 +1,11 @@
-import dotenv from 'dotenv';
-dotenv.config();
+export const PORT = 3000;
 
-// EMAIL and PASSWORD just for test
-export const { PORT = 3000, EMAIL, PASSWORD, JWT_SECRET_KEY } = process.env;
+export const EMAIL = 'cordeiromariano17@gmail.com';
+
+export const PASSWORD = 'Cordeiro';
+
+export const PHONENUMBER = '+1234567890';
+
+export const JWT_SECRET_KEY = 'basic-secret_key/for@development';
 
 export const validCategories = ['sports', 'movies', 'technology', 'music', 'games'];

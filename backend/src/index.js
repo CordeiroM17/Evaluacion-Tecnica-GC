@@ -14,7 +14,14 @@ import { loginRouter } from './routes/login.route.js';
 const app = express();
 
 // MIDDLEWARES
-app.use(cors());
+app.use(
+  cors({
+    origin: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
+    credentials: true,
+  })
+);
 app.use(express.json());
 app.use(cookieParser());
 
