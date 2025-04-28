@@ -104,4 +104,39 @@ export const subscriptionService = {
       });
     });
   },
+
+  deleteCategory: async function (userId, categoryName) {
+    const { categoriesAvailables: validCategories } = await this.categories();
+
+    if (!validCategories.includes(categoryName)) {
+      throw 'Invalid categories';
+    }
+
+    return new Promise((resolve, reject) => {
+      db.get('SELECT id FROM categories WHERE name = ?', [categoryName], (err, categoryRow) => {
+        if (err) {
+          return reject(err);
+        }
+        if (!categoryRow) {
+          return reject('Category not found');
+        }
+
+        const categoryId = categoryRow.id;
+
+        db.run('DELETE FROM subscriptions WHERE user_id = ? AND category_id = ?', [userId, categoryId], function (err) {
+          if (err) {
+            return reject(err);
+          }
+
+          const changes = this.changes;
+
+          if (changes === 0) {
+            return reject('Subscription not found');
+          }
+
+          resolve('Subscription deleted successfully');
+        });
+      });
+    });
+  },
 };

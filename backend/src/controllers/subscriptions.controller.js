@@ -66,4 +66,25 @@ export const subscriptionsController = {
       });
     }
   },
+
+  deleteCategory: async function (req, res) {
+    const { id } = req.user;
+    const { category } = req.categoryToDelete;
+
+    try {
+      const categoryDeleted = await subscriptionService.deleteCategory(id, category);
+
+      return res.status(200).json({
+        status: 'Success',
+        message: 'Deleted',
+        data: categoryDeleted,
+      });
+    } catch (error) {
+      return res.status(500).json({
+        status: 'Error',
+        message: 'Something went wrong',
+        data: { error },
+      });
+    }
+  },
 };

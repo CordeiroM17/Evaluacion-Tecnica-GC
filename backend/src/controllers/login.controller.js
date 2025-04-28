@@ -33,9 +33,9 @@ export const loginController = {
           data: userFound,
         });
     } catch (error) {
-      return res.status(500).json({
+      return res.status(400).json({
         status: 'Error',
-        message: 'Something went wrong',
+        message: error,
         data: { error },
       });
     }

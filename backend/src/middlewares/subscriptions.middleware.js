@@ -81,3 +81,30 @@ export function validatePhoneAndCategories(req, res, next) {
     });
   }
 }
+
+export function validateCategory(req, res, next) {
+  const { category } = req.body;
+  try {
+    // Verify if in the req.params exist phone
+    if (!category) {
+      return res.status(400).json({
+        status: 'Error',
+        message: 'Category required',
+        data: {},
+      });
+    }
+
+    // DTO
+    req.categoryToDelete = {
+      category,
+    };
+
+    next();
+  } catch (error) {
+    return res.status(500).json({
+      status: 'Error',
+      message: 'Something went wrong',
+      data: error,
+    });
+  }
+}

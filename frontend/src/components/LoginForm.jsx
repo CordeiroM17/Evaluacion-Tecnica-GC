@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { PostLogin } from "../api/login";
 import { useAuth } from "../context/AuthProvider";
+import Swal from "sweetalert2";
 
 const LoginForm = () => {
   const [email, setEmail] = useState("");
@@ -10,15 +11,34 @@ const LoginForm = () => {
 
   const navigate = useNavigate();
 
+  const Toast = Swal.mixin({
+    toast: true,
+    position: "bottom",
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+      toast.onmouseenter = Swal.stopTimer;
+      toast.onmouseleave = Swal.resumeTimer;
+    },
+  });
+
   const handleSumbit = async (e) => {
     e.preventDefault();
-    // Do some Validations or something
 
-    const res = await PostLogin(email, password);
+    try {
+      const res = await PostLogin(email, password);
 
-    if (res.status === 200) {
-      setIsAuthenticated(true);
-      navigate("/home");
+      if (res.status === 200) {
+        setIsAuthenticated(true);
+        navigate("/home");
+      }
+    } catch (error) {
+      console.log(error);
+      Toast.fire({
+        icon: "error",
+        title: error.response.data.message,
+      });
     }
   };
 

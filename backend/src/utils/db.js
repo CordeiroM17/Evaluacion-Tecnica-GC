@@ -66,8 +66,6 @@ export function initializeDatabase() {
         if (error) {
           return console.error('Error inserting user:', error.message);
         }
-
-        console.log('Inserted test user with ID:', this.lastID);
       }
     );
   });

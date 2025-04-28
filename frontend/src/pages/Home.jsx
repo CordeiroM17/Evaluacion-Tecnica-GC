@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 
 import {
+  DeleteCategory,
   GetAllCategories,
   GetAllSubscriptionByPhoneNumber,
   PostSubscription,
@@ -39,18 +40,11 @@ const Home = () => {
 
       setPhoneChecked(true);
     } catch (error) {
-      if (error.status === 404) {
-        console.log("User not found.");
-        Toast.fire({
-          icon: "error",
-          title: "Check your phone number again",
-        });
-      } else {
-        Toast.fire({
-          icon: "error",
-          title: "Something went wrong",
-        });
-      }
+      Toast.fire({
+        icon: "error",
+        title: error.response.data.message,
+      });
+
       setPhoneChecked(false);
     }
   };
@@ -85,11 +79,17 @@ const Home = () => {
 
   const handleSubmitPhone = async (e) => {
     e.preventDefault();
-    setNumberSubmit(phoneNumber);
+    if (!phoneNumber) {
+      Toast.fire({
+        icon: "error",
+        title: "Check your phone number again",
+      });
+    } else {
+      setNumberSubmit(phoneNumber);
+    }
   };
 
   const addSubscriptionHandler = async (name) => {
-    console.log(subscriptions.includes(name));
     if (!subscriptions.includes(name)) {
       const catArray = [name];
 
@@ -115,8 +115,19 @@ const Home = () => {
   };
 
   const deleteSubscriptionHandler = async (name) => {
-    console.log(name);
-    // setNumberSubmit(numberSubmit) to refresh
+    const resSubscription = await DeleteCategory(name);
+    if (resSubscription.status === 200) {
+      Toast.fire({
+        icon: "success",
+        title: `You unsiscribe ${name}`,
+      });
+      await fetchData(numberSubmit); // Refresh subscriptions added
+    } else {
+      Toast.fire({
+        icon: "error",
+        title: "Failed to subscribe",
+      });
+    }
   };
 
   return (
@@ -136,7 +147,7 @@ const Home = () => {
               </label>
               <div className="relative rounded-md shadow-sm">
                 <input
-                  className="w-full px-4 py-3 border rounded-md "
+                  className="w-full px-4 py-3 border rounded-md"
                   type="text"
                   id="phone"
                   placeholder="Ej: +1234567890"

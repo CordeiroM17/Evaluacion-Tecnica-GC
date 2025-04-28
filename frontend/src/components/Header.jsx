@@ -1,7 +1,9 @@
 import { useNavigate } from "react-router-dom";
 import { Logout } from "../api/login";
+import { useAuth } from "../context/AuthProvider";
 
 const Header = () => {
+  const { isAuthenticated, setIsAuthenticated } = useAuth();
   const navigate = useNavigate();
 
   const handleLogout = async (e) => {
@@ -10,6 +12,7 @@ const Header = () => {
     const res = await Logout();
 
     if (res.status === 200) {
+      setIsAuthenticated(false);
       navigate("/");
     }
   };
@@ -19,7 +22,7 @@ const Header = () => {
       <h1 className="text-3xl font-bold text-center">
         News Subscription Manager
       </h1>
-      <button onClick={handleLogout}>Cerrar Sesion</button>
+      {isAuthenticated && <button onClick={handleLogout}>Cerrar Sesion</button>}
     </header>
   );
 };

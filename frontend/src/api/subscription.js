@@ -11,3 +11,9 @@ export const GetAllSubscriptionByPhoneNumber = async (phoneNumber) => {
 export const GetAllCategories = async () => {
   return await api.get("/subscriptions/categories");
 };
+
+export const DeleteCategory = async (categoryToDelete) => {
+  return await api.delete("/subscriptions", {
+    data: { category: categoryToDelete },
+  });
+};
