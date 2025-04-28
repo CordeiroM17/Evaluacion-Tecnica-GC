@@ -120,52 +120,73 @@ const Home = () => {
   };
 
   return (
-    <section className="w-full flex justify-around items-center">
+    <section className="w-full mx-auto pt-10 px-4 flex justify-center items-center gap-8">
       {!phoneChecked ? (
-        <form
-          onSubmit={handleSubmitPhone}
-          className="bg-[#191919] w-[500px] flex flex-col items-center mt-10 text-white"
-        >
-          <h2>Enter your phone number</h2>
-          <div className="w-90 h-[80px] flex flex-col justify-center items-center">
-            <label className="self-start" htmlFor="phone">
-              Phone:
-            </label>
-            <input
-              className="w-full bg-white text-black"
-              type="text"
-              id="phone"
-              value={phoneNumber}
-              onChange={(e) => setPhoneNumber(e.target.value)}
-            />
+        <div className="rounded-lg border">
+          <div className="p-6 text-white">
+            <h2 className="text-2xl font-semibold">Enter your phone number</h2>
+            <p className="mt-2 opacity-90">
+              Verify your current subscriptions and manage your preferences
+            </p>
           </div>
-          <button type="submit">Submit</button>
-        </form>
+          <form onSubmit={handleSubmitPhone} className="p-6 space-y-6">
+            <div className="space-y-2">
+              <label className="block text-sm font-medium" htmlFor="phone">
+                Phone number
+              </label>
+              <div className="relative rounded-md shadow-sm">
+                <input
+                  className="w-full px-4 py-3 border rounded-md "
+                  type="text"
+                  id="phone"
+                  placeholder="Ej: +1234567890"
+                  value={phoneNumber}
+                  onChange={(e) => setPhoneNumber(e.target.value)}
+                />
+              </div>
+            </div>
+            <button className="w-full" type="submit">
+              Verify subscriptions
+            </button>
+          </form>
+        </div>
       ) : (
         <>
-          <div>
-            <h2>Your subscriptions {numberSubmit}</h2>
-            <ul>
+          <div className="p-6 rounded-lg border self-start">
+            <h2 className="text-2xl font-semibold pb-6">
+              Your subscriptions {numberSubmit}
+            </h2>
+            <ul className="w-full">
               {subscriptions.length > 0 ? (
                 subscriptions.map((name) => (
-                  <li key={name}>
-                    <span>{name}</span>
+                  <li
+                    className="w-full flex items-center justify-between mt-2 opacity-90 space-y-2 border rounded-lg p-4 uppercase"
+                    key={name}
+                  >
+                    <span className="m-0">{name}</span>
                     <button onClick={() => deleteSubscriptionHandler(name)}>
                       Delete
                     </button>
                   </li>
                 ))
               ) : (
-                <li>No subscriptions</li>
+                <li className="mt-2 opacity-90 text-center">
+                  No subscriptions
+                </li>
               )}
             </ul>
           </div>
-          <div>
-            <h2>Not subscribed? Subscribe.</h2>
+          <div className="p-6 rounded-lg border self-start">
+            <h2 className="text-2xl font-semibold pb-6">
+              Not subscribed? Subscribe.
+            </h2>
             <ul>
               {categories.map((name) => (
-                <li key={name}>
-                  <span>{name}</span>
+                <li
+                  className="w-full flex items-center justify-between mt-2 opacity-90 space-y-2 border rounded-lg p-4 uppercase"
+                  key={name}
+                >
+                  <span className="m-0">{name}</span>
                   <button onClick={() => addSubscriptionHandler(name)}>
                     Add
                   </button>

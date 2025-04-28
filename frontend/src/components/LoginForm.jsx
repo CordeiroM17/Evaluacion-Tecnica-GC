@@ -23,39 +23,50 @@ const LoginForm = () => {
   };
 
   return (
-    <form
-      onSubmit={handleSumbit}
-      className="bg-[#191919] w-[500px] flex flex-col items-center mt-10 text-white"
-    >
-      <h2>Login</h2>
-      <div className="w-90 h-[80px] flex flex-col justify-center items-center">
-        <label className="self-start" htmlFor="email">
-          Email:
-        </label>
-        <input
-          className="w-full bg-white text-black"
-          type="email"
-          id="email"
-          name="email"
-          onChange={(e) => setEmail(e.target.value)}
-        />
+    <div className="rounded-lg border">
+      <div className="p-6 text-white">
+        <h2 className="text-2xl font-semibold">Account Login</h2>
+        <p className="mt-2 opacity-90">
+          Access your personalized news feed and subscription preferences
+        </p>
       </div>
-      <div className="w-90 h-[80px] flex flex-col justify-center items-center">
-        <label className="self-start" htmlFor="password">
-          Password:
-        </label>
-        <input
-          className="w-full bg-white text-black"
-          type="password"
-          id="password"
-          name="password"
-          onChange={(e) => setPassword(e.target.value)}
-        />
-      </div>
-      <div className="w-full h-[80px]">
-        <button type="submit">Login</button>
-      </div>
-    </form>
+
+      <form onSubmit={handleSumbit} className="p-6 space-y-6">
+        <div className="space-y-2">
+          <label className="block text-sm font-medium" htmlFor="email">
+            Email
+          </label>
+          <div className="relative rounded-md shadow-sm">
+            <input
+              className="w-full px-4 py-3 border rounded-md"
+              type="email"
+              id="email"
+              placeholder="your.email@example.com"
+              name="email"
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </div>
+        </div>
+        <div className="space-y-2">
+          <label className="block text-sm font-medium" htmlFor="password">
+            Password
+          </label>
+          <div className="relative rounded-md shadow-sm">
+            <input
+              className="w-full px-4 py-3 border rounded-md"
+              type="password"
+              id="password"
+              placeholder="*********"
+              name="password"
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </div>
+        </div>
+        <button className="w-full" type="submit">
+          Login
+        </button>
+      </form>
+    </div>
   );
 };
 

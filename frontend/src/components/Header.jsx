@@ -16,7 +16,9 @@ const Header = () => {
 
   return (
     <header className="flex items-center justify-around w-full h-[80px] bg-[#191919]">
-      <h1>HEADER TITLE</h1>
+      <h1 className="text-3xl font-bold text-center">
+        News Subscription Manager
+      </h1>
       <button onClick={handleLogout}>Cerrar Sesion</button>
     </header>
   );

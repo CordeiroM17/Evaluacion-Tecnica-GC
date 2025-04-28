@@ -10,7 +10,7 @@ function App() {
     <BrowserRouter>
       <AuthProvider>
         <Header />
-        <main className="w-full flex justify-center">
+        <main>
           <Routes>
             <Route exact path="/" element={<MainPage />} />
             <Route
