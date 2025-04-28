@@ -10,6 +10,7 @@ import {
 const Home = () => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [numberSubmit, setNumberSubmit] = useState("");
+  const [phoneChecked, setPhoneChecked] = useState(false);
   const [subscriptions, setSubscriptions] = useState([]);
   const [categories, setCategories] = useState([]);
 
@@ -34,18 +35,23 @@ const Home = () => {
 
       if (resSubscription.status === 200) {
         setSubscriptions(resSubscription.data.data.categories);
+      }
+
+      setPhoneChecked(true);
+    } catch (error) {
+      if (error.status === 404) {
+        console.log("User not found.");
+        Toast.fire({
+          icon: "error",
+          title: "Check your phone number again",
+        });
       } else {
         Toast.fire({
           icon: "error",
           title: "Something went wrong",
         });
       }
-    } catch (error) {
-      console.log(error);
-      Toast.fire({
-        icon: "error",
-        title: "Something went wrong",
-      });
+      setPhoneChecked(false);
     }
   };
 
@@ -54,7 +60,7 @@ const Home = () => {
       try {
         const resCategories = await GetAllCategories();
         if (resCategories.status === 200) {
-          setCategories(resCategories.data.data.categories);
+          setCategories(resCategories.data.data.categoriesAvailables);
         } else {
           Toast.fire({
             icon: "error",
@@ -83,19 +89,27 @@ const Home = () => {
   };
 
   const addSubscriptionHandler = async (name) => {
-    const catArray = [name];
-    const resSubscription = await PostSubscription(numberSubmit, catArray);
+    console.log(subscriptions.includes(name));
+    if (!subscriptions.includes(name)) {
+      const catArray = [name];
 
-    if (resSubscription.status === 201) {
-      Toast.fire({
-        icon: "success",
-        title: `Congratulations, you are now subscribed to ${name}`,
-      });
-      await fetchData(numberSubmit); // Refresh subscriptions added
+      const resSubscription = await PostSubscription(numberSubmit, catArray);
+      if (resSubscription.status === 201) {
+        Toast.fire({
+          icon: "success",
+          title: `Congratulations, you are now subscribed to ${name}`,
+        });
+        await fetchData(numberSubmit); // Refresh subscriptions added
+      } else {
+        Toast.fire({
+          icon: "error",
+          title: "Failed to subscribe",
+        });
+      }
     } else {
       Toast.fire({
         icon: "error",
-        title: "Failed to subscribe",
+        title: `You already subscribed to ${name}`,
       });
     }
   };
@@ -107,7 +121,7 @@ const Home = () => {
 
   return (
     <section className="w-full flex justify-around items-center">
-      {!numberSubmit ? (
+      {!phoneChecked ? (
         <form
           onSubmit={handleSubmitPhone}
           className="bg-[#191919] w-[500px] flex flex-col items-center mt-10 text-white"

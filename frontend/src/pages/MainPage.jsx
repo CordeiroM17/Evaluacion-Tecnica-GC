@@ -1,4 +1,5 @@
 import LoginForm from "../components/LoginForm";
+
 const MainPage = () => {
   return (
     <section>

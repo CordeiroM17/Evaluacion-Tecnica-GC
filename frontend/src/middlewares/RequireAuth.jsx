@@ -1,5 +1,5 @@
-import { Navigate } from "react-router-dom";
 import { useAuth } from "../context/AuthProvider";
+import { Navigate } from "react-router-dom";
 
 const RequireAuth = ({ children }) => {
   const { isAuthenticated, loading } = useAuth();
@@ -9,7 +9,7 @@ const RequireAuth = ({ children }) => {
   }
 
   if (!isAuthenticated) {
-    return <Navigate to="/" replace />;
+    return <Navigate to="/" />;
   }
 
   return children;

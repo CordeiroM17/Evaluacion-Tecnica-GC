@@ -22,17 +22,18 @@ export const subscriptionsController = {
 
   getAllSubscriptionByPhoneNumber: async function (req, res) {
     const { phoneNumber } = req.phoneNumber;
+    const userPhone = req.user.phone;
 
     try {
-      const subscriptionsFound = await subscriptionService.getSubscriptionsByPhone(phoneNumber);
-
-      if (subscriptionsFound.categories.length == 0) {
-        return res.status(200).json({
-          status: 'Success',
-          message: `Phone number ${phoneNumber} doesn't have subscriptions yet`,
-          data: subscriptionsFound,
+      if (phoneNumber !== userPhone) {
+        return res.status(404).json({
+          status: 'Error',
+          message: 'User phone not found',
+          data: {},
         });
       }
+
+      const subscriptionsFound = await subscriptionService.getSubscriptionsByPhone(phoneNumber);
 
       return res.status(200).json({
         status: 'Success',
@@ -48,9 +49,9 @@ export const subscriptionsController = {
     }
   },
 
-  getAllCategories: function (req, res) {
+  getAllCategories: async function (req, res) {
     try {
-      const allCategories = subscriptionService.categories();
+      const allCategories = await subscriptionService.categories();
 
       return res.status(200).json({
         status: 'Success',

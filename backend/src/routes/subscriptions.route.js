@@ -7,6 +7,6 @@ export const subscriptionsRouter = express.Router();
 
 subscriptionsRouter.post('/', validateToken, validatePhoneAndCategories, subscriptionsController.postSubscription);
 
-subscriptionsRouter.get('/categories', subscriptionsController.getAllCategories);
+subscriptionsRouter.get('/categories', validateToken, subscriptionsController.getAllCategories);
 
 subscriptionsRouter.get('/:phoneNumber', validateToken, validatePhoneNumber, subscriptionsController.getAllSubscriptionByPhoneNumber);

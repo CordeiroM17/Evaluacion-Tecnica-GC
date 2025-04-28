@@ -10,7 +10,7 @@ export function validateLogin(req, res, next) {
     if (!email || !password) {
       return res.status(400).json({
         status: 'Error',
-        message: 'Email and password required',
+        message: 'Email, password and phone number required',
         data: {},
       });
     }
@@ -26,8 +26,6 @@ export function validateLogin(req, res, next) {
 
     // Validate password
     // 8 characters
-    // 1 uppercase character
-    // 1 number
     if (typeof password !== 'string' || password.length < 8) {
       return res.status(400).json({
         status: 'Error',
@@ -55,17 +53,19 @@ export function validateLogin(req, res, next) {
 export function validateToken(req, res, next) {
   const token = req.cookies.token;
 
-  try {
-    if (!token) {
-      return res.status(401).json({
-        status: 'Error',
-        message: 'Unauthorized',
-        data: {},
-      });
-    }
+  if (!token) {
+    return res.status(401).json({
+      status: 'Error',
+      message: 'Unauthorized',
+      data: {},
+    });
+  }
 
+  try {
     // If jwt.verify fails, throw error
-    jwt.verify(token, JWT_SECRET_KEY);
+    const userData = jwt.verify(token, JWT_SECRET_KEY);
+
+    req.user = userData;
 
     next();
   } catch (error) {

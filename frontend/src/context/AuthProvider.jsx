@@ -8,25 +8,28 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const verifyUserLogged = async () => {
-      try {
-        const res = await VerifyToken();
+    if (location.pathname !== "/") {
+      const verifyUserLogged = async () => {
+        try {
+          const res = await VerifyToken();
 
-        if (res.status === 200) {
-          setIsAuthenticated(true);
-        } else {
+          if (res.status === 200) {
+            setIsAuthenticated(true);
+          } else {
+            setIsAuthenticated(false);
+          }
+        } catch (error) {
+          console.log(error);
           setIsAuthenticated(false);
+        } finally {
+          setLoading(false);
         }
-      } catch (error) {
-        console.log(error);
-        setIsAuthenticated(false);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    verifyUserLogged();
-  }, []);
+      };
+      verifyUserLogged();
+    } else {
+      setLoading(false);
+    }
+  }, [location.pathname]);
 
   return (
     <AuthContext.Provider
