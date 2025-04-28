@@ -45,7 +45,7 @@ export function validatePhoneAndCategories(req, res, next) {
   const { phone, categories } = req.body;
 
   try {
-    // Verify if in the req.body exist phone
+    // Verify if phone and categories exist in the req.body
     if (!phone || !categories) {
       return res.status(400).json({
         status: 'Error',
@@ -104,7 +104,7 @@ export function validateCategory(req, res, next) {
     return res.status(500).json({
       status: 'Error',
       message: 'Something went wrong',
-      data: error,
+      data: { error },
     });
   }
 }

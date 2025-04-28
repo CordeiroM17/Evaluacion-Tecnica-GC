@@ -45,7 +45,7 @@ export function validateLogin(req, res, next) {
     return res.status(500).json({
       status: 'Error',
       message: 'Something went wrong',
-      data: error,
+      data: { error },
     });
   }
 }

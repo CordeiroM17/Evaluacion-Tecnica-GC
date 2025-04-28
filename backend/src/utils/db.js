@@ -15,7 +15,7 @@ export function initializeDatabase() {
       )
     `);
 
-    // Create categories table
+    // Create categories table for validCategories
     db.run(`
       CREATE TABLE IF NOT EXISTS categories (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -23,7 +23,7 @@ export function initializeDatabase() {
       )
     `);
 
-    // Create subsctiption table for validCategories
+    // Create subsctiption table
     db.run(`
       CREATE TABLE IF NOT EXISTS subscriptions (
         id INTEGER PRIMARY KEY AUTOINCREMENT,

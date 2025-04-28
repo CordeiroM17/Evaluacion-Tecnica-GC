@@ -32,7 +32,6 @@ app.use('/docs', swaggerUiExpress.serve, swaggerUiExpress.setup(swaggerOptions))
 app.use('/subscriptions', subscriptionsRouter);
 app.use('/login', loginRouter);
 
-// Iniciar servidor
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });

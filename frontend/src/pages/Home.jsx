@@ -62,10 +62,9 @@ const Home = () => {
           });
         }
       } catch (error) {
-        console.log(error);
         Toast.fire({
           icon: "error",
-          title: "Error loading categories",
+          title: error,
         });
       }
     };
