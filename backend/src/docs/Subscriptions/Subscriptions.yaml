@@ -31,13 +31,65 @@ paths:
                 status: Error
                 message: Phone number not valid. Should be in an international format (e.g. +1234567890)
                 data: {}
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
         '500':
           description: Server Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ServerError'
-
+    delete:
+      summary: Delete category subscription
+      tags:
+        - Subscriptions
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                category:
+                  type:: string
+                  example: 'music'
+      responses:
+        '200':
+          description: Subscription deleted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubscriptionPostResponse'
+              example:
+                status: Success
+                message: Subscription deleted
+                data: Subscription deleted successfully
+        '400':
+          description: Subscription not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubscriptionPostResponse'
+              example:
+                status: Error
+                message: Subscription not found
+                data: {}
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServerError'
   /subscriptions/{phoneNumber}:
     get:
       summary: Get all categories for a number
@@ -59,10 +111,8 @@ paths:
                 $ref: '#/components/schemas/SubscriptionGetResponse'
               example:
                 status: Success
-                message:
-                  enum: All subscriptions for number, +1234567890
-                data:
-                  enum: { phone: 1234567890', categories: [music, sports] }
+                message: All subscriptions for number, +1234567890
+                data: { phone: 1234567890', categories: [music, sports] }
         '400':
           description: Invalid phone number
           content:
@@ -73,6 +123,50 @@ paths:
                 status: Error
                 message: Phone number not valid. Should be in an international format (e.g. +1234567890)
                 data: {}
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServerError'
+  /subscriptions/categories:
+    get:
+      summary: Get all categories
+      tags:
+        - Subscriptions
+      responses:
+        '200':
+          description: Get all categories
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubscriptionGetResponse'
+              example:
+                status: Success
+                message: All categories available
+                data: { 'categoriesAvailables': ['sports', 'movies', 'technology', 'music', 'games'] }
+        '400':
+          description: Invalid phone number
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubscriptionGetResponse'
+              example:
+                status: Error
+                message: Phone number not valid. Should be in an international format (e.g. +1234567890)
+                data: {}
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
         '500':
           description: Server Error
           content:
@@ -147,7 +241,18 @@ components:
             - {}
             - { categoriesAvailable: ['sports', 'movies', 'technology', 'music', 'games'] }
             - { phone: '+1234567890', categories: [music, sports] }
-
+    UnauthorizedResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: Error
+        message:
+          type: string
+          example: Unauthorized
+        data:
+          type: object
+          example: {}
     ServerError:
       type: object
       properties:

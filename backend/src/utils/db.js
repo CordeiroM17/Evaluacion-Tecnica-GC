@@ -5,7 +5,6 @@ export const db = new sqlite3.Database(':memory:');
 
 export function initializeDatabase() {
   db.serialize(() => {
-    console.log('-----CREATING DATABASE IN MEMORY-----');
     // Create user table
     db.run(`
       CREATE TABLE IF NOT EXISTS users (
@@ -16,8 +15,6 @@ export function initializeDatabase() {
       )
     `);
 
-    console.log('User table CREATED');
-
     // Create categories table
     db.run(`
       CREATE TABLE IF NOT EXISTS categories (
@@ -25,8 +22,6 @@ export function initializeDatabase() {
         name TEXT UNIQUE NOT NULL
       )
     `);
-
-    console.log('Categories table CREATED');
 
     // Create subsctiption table for validCategories
     db.run(`
@@ -40,7 +35,7 @@ export function initializeDatabase() {
       )
     `);
 
-    console.log('Subsctiption table CREATED');
+    console.log('Database created');
 
     // Insert validCategories in categories table
     const insertCategory = db.prepare(`
@@ -52,7 +47,6 @@ export function initializeDatabase() {
     });
 
     insertCategory.finalize();
-    console.log('Valid categories are inserted ');
 
     // Insert user with email, password and phone number
     db.run(
@@ -68,6 +62,8 @@ export function initializeDatabase() {
         }
       }
     );
+
+    console.log('User and categories inserted');
   });
 
   console.log('Database running');

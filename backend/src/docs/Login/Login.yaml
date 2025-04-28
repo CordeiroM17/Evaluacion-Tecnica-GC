@@ -1,0 +1,172 @@
+paths:
+  /login:
+    post:
+      summary: Login user
+      tags:
+        - Login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        '200':
+          description: Login successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginPostResponse'
+              example:
+                status: Success
+                message: Authentication completed
+                data: { 'id': 1, 'email': 'cordeiromariano17@gmail.com', 'password': 'Cordeiro', 'phone': '+1234567890' }
+        '400':
+          description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginPostResponse'
+              example:
+                status: Error
+                message: User not found
+                data: {}
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServerError'
+  /login/logout:
+    post:
+      summary: Logout
+      tags:
+        - Login
+      responses:
+        '200':
+          description: Logout successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardResponse'
+              example:
+                status: Success
+                message: Cookie deleted
+                data: {}
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServerError'
+  /login/verifyToken:
+    get:
+      summary: Valid token
+      tags:
+        - Login
+      responses:
+        '200':
+          description: Authenticated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardResponse'
+              example:
+                status: Success
+                message: Authenticated
+                data: {}
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServerError'
+
+components:
+  schemas:
+    LoginRequest:
+      type: object
+      required:
+        - email
+        - password
+      properties:
+        email:
+          type: string
+          example: 'cordeiromariano17@gmail.com'
+        password:
+          type: string
+          example: 'Cordeiro'
+
+    StandardResponse:
+      type: object
+      required:
+        - status
+        - message
+        - data
+      properties:
+        status:
+          type: string
+          enum:
+            - Success
+            - Error
+        message:
+          type: string
+        data:
+          type: object
+
+    LoginPostResponse:
+      $ref: '#/components/schemas/StandardResponse'
+      type: object
+      properties:
+        message:
+          type: string
+          enum:
+            - Email and password  number required
+            - Invalid email
+            - password must have at least 8 characters
+            - Authentication completed
+            - Password incorrect
+            - User not found
+        data:
+          type: object
+          enum:
+            - {}
+            - { status: 'Success', message: 'Authentication completed', data: { 'id': 1, 'email': 'cordeiromariano17@gmail.com', 'password': 'Cordeiro', 'phone': '+1234567890' } }
+
+    UnauthorizedResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: Error
+        message:
+          type: string
+          example: Unauthorized
+        data:
+          type: object
+          example: {}
+
+    ServerError:
+      type: object
+      properties:
+        status:
+          type: string
+          example: Error
+        message:
+          type: string
+          example: Something went wrong
+        data:
+          type: object
+          example: {}

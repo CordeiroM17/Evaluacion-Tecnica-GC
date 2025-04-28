@@ -33,9 +33,16 @@ export const loginController = {
           data: userFound,
         });
     } catch (error) {
-      return res.status(400).json({
+      if (error === 'Password incorrect' || error === 'User not found') {
+        return res.status(400).json({
+          status: 'Error',
+          message: error,
+          data: {},
+        });
+      }
+      return res.status(500).json({
         status: 'Error',
-        message: error,
+        message: 'Something went wrong',
         data: { error },
       });
     }

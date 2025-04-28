@@ -10,7 +10,7 @@ export function validateLogin(req, res, next) {
     if (!email || !password) {
       return res.status(400).json({
         status: 'Error',
-        message: 'Email, password and phone number required',
+        message: 'Email and password  number required',
         data: {},
       });
     }

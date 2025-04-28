@@ -80,6 +80,13 @@ export const subscriptionsController = {
         data: categoryDeleted,
       });
     } catch (error) {
+      if (error === 'Subscription not found') {
+        return res.status(400).json({
+          status: 'Error',
+          message: 'Subscription not found',
+          data: {},
+        });
+      }
       return res.status(500).json({
         status: 'Error',
         message: 'Something went wrong',
